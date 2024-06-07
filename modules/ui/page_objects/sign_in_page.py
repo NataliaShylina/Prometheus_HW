@@ -22,7 +22,7 @@ class SignInPage(BasePage):
         btn_elem = self.driver.find_element(By.NAME, "commit")
         btn_elem.click()
 
-        #assert driver.title == "Sign in to GitHub - GitHub"    
+        assert driver.title == "Sign in to GitHub · GitHub"    
 
     def check_title(self, expected_title):
         return self.driver.title == expected_title    
