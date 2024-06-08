@@ -1,6 +1,5 @@
 from modules.ui.page_objects.base_page import BasePage
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 
 class SauceDemoPage(BasePage):
@@ -10,8 +9,8 @@ class SauceDemoPage(BasePage):
     LOGIN_BUTTON = (By.ID, "login-button")
     LOGO = (By.CLASS_NAME, "app_logo")
     
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, driver):
+        super().__init__(driver)
 
     def open_sauce_demo(self):
         self.driver.get(SauceDemoPage.URL_SAUSE_DEMO)
