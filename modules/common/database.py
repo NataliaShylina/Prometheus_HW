@@ -81,10 +81,8 @@ class Database():
         return record    
     
     def insert_order(self, id, customer_id, product_id, order_date):
-        #query = "INSERT OR REPLACE INTO orders (id, customer_id, product_id, order_date) VALUES ('{id}', '{customer_id}', {product_id}, '{order_date}')"
         query = "INSERT OR REPLACE INTO orders (id, customer_id, product_id, order_date) VALUES (?, ?, ?, ?)"
         self.cursor.execute(query, (id, customer_id, product_id, order_date))
-        #self.cursor.execute(query)
         self.connection.commit()
 
     def select_orders_by_order_date(self, order_date):
