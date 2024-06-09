@@ -55,3 +55,51 @@ class Database():
         self.cursor.execute(query)
         record = self.cursor.fetchall()
         return record    
+    
+     #individual project
+    def insert_customer(self, id, name, address, city, postal_code, country):
+        query = f"INSERT OR REPLACE INTO customers (id, name, address, city, postalCode, country) VALUES ({id}, '{name}', '{address}', '{city}', {postal_code}, '{country}')"
+        self.cursor.execute(query)
+        self.connection.commit()
+
+    def select_customer_city_by_id(self, id):
+        query = f"SELECT city FROM customers WHERE id = '{id}' "    
+        self.cursor.execute(query)
+        record = self.cursor.fetchall()
+        return record    
+
+    def update_customer_city_by_id(self, id, city):
+        query = f"UPDATE customers SET city = '{city}' WHERE id = '{id}' "
+        self.cursor.execute(query)
+        self.connection.commit()
+
+    def customers_data_is_not_empty(self):
+        query = "SELECT address, city, postalCode, country FROM customers \
+            WHERE city = 'Lviv' AND country IS NOT NULL"
+        self.cursor.execute(query)
+        record = self.cursor.fetchall()
+        return record    
+    
+    def insert_order(self, id, customer_id, product_id, order_date):
+        #query = "INSERT OR REPLACE INTO orders (id, customer_id, product_id, order_date) VALUES ('{id}', '{customer_id}', {product_id}, '{order_date}')"
+        query = "INSERT OR REPLACE INTO orders (id, customer_id, product_id, order_date) VALUES (?, ?, ?, ?)"
+        self.cursor.execute(query, (id, customer_id, product_id, order_date))
+        #self.cursor.execute(query)
+        self.connection.commit()
+
+    def select_orders_by_order_date(self, order_date):
+        #query = "SELECT * FROM orders WHERE order_date = '{order_date}' "    
+        query = "SELECT * FROM orders WHERE order_date = ?"    
+        self.cursor.execute(query, (order_date,))
+        records = self.cursor.fetchall()
+        return records
+    
+    def get_order_info_for_appropriate_date(self):
+        query = "SELECT orders.id, customers.name, products.name, orders.order_date \
+                FROM orders \
+                JOIN customers ON orders.customer_id = customers.id \
+                JOIN products ON orders.product_id = products.id"
+        self.cursor.execute(query)
+        record = self.cursor.fetchall()
+        return record 
+    

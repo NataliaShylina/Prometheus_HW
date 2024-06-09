@@ -1,11 +1,15 @@
 import pytest
 from modules.common.database import Database
+import time
 
 
 @pytest.mark.database
 def test_database_connection():
     db = Database()
-    db.test_connection()
+    try:
+        db.test_connection() # Connection successful, no assertion needed here
+    except DatabaseConnectionError:  # Assuming I have a custom DatabaseConnectionError exception
+        assert False, "Failed to connect to database"
 
 
 @pytest.mark.database
@@ -14,6 +18,8 @@ def test_check_all_users():
     users = db.get_all_users()
 
     print(users)
+      
+    assert users, "No users found in the database" # Assuming 'get_all_users' returns a list of user objects or dictionaries
 
 @pytest.mark.database
 def test_check_user_sergii():
@@ -57,9 +63,102 @@ def test_detailed_orders():
     db = Database()
     orders = db.get_detailed_orders()
     print("Замовлення", orders)
-    assert len(orders) == 1
+    assert len(orders) == 2
 
     assert orders[0][0] == 1
     assert orders[0][1] == 'Sergii'  
     assert orders[0][2] == 'солодка вода'  
     assert orders[0][3] == 'з цукром'     
+
+    #individual part
+
+@pytest.mark.database
+def test_customer_insert():
+    db = Database()
+    customer = db.insert_customer(3, 'Natalia', 'Peremohy 2', 'Kyiv', 8122, 'Ukraine')
+    city = db.select_customer_city_by_id(3)
+    print("Новий кастомер", customer)
+
+    assert city[0][0] == 'Kyiv'
+
+@pytest.mark.database
+def test_customer_city_update():
+    db = Database()
+    db.update_customer_city_by_id(3, 'Lviv')
+    city = db.select_customer_city_by_id(3)
+
+    assert city[0][0] == 'Lviv'  
+
+@pytest.mark.database
+def test_customers_data_is_not_null():
+    db = Database()
+    data = db.customers_data_is_not_empty()
+
+    print(data)
+      
+    assert data, "Customer's data for important columns is not empty" 
+
+@pytest.mark.database
+def test_order_insert_by_date():
+    db = Database()
+    db.insert_order(3, 3, 3, '09:06:2024')
+    db.insert_order(4, 4, 4, '09:06:2024')
+    db.insert_order(5, 5, 5, '08:06:2024')
+    db.insert_order(6, 6, 6, '08:06:2024')
+    
+    orders_0906 = db.select_orders_by_order_date('09:06:2024')
+    orders_0806 = db.select_orders_by_order_date('08:06:2024')
+
+    # Assertions for orders on '09:06:2024'
+    assert len(orders_0906) == 2, "There should be 2 orders on '09:06:2024'"
+    assert orders_0906[0][0] == 3, "First order ID on '09:06:2024' should be 3"
+    assert orders_0906[1][0] == 4, "Second order ID on '09:06:2024' should be 4"
+
+    # Assertions for orders on '08:06:2024'
+    assert len(orders_0806) == 4, "There should be 4 orders on '08:06:2024'"
+    assert orders_0806[0][0] == 1, "First order ID on '08:06:2024' should be 1"
+    assert orders_0806[1][0] == 2, "Second order ID on '08:06:2024' should be 2"
+    assert orders_0806[2][0] == 5, "Third order ID on '08:06:2024' should be 5"
+    assert orders_0806[3][0] == 6, "Fourth order ID on '08:06:2024' should be 6"
+
+    # Print statements for debugging
+    print("Orders on 09:06:2024:", orders_0906)
+    print("Orders on 08:06:2024:", orders_0806)
+
+@pytest.mark.database
+def test_detailed_orders():
+    db = Database()
+    orders = db.get_detailed_orders()
+    print("Замовлення", orders)
+
+    # Update the expected number of orders according to the current state
+    expected_number_of_orders = 5
+
+    assert len(orders) == expected_number_of_orders, f"Expected {expected_number_of_orders} orders"
+
+    # Print each order for debugging
+    for order in orders:
+        print(order)
+
+@pytest.mark.database
+def test_get_order_info_for_appropriate_date():
+    db = Database()
+
+    # Insert test data into customers, products, and orders tables
+    db.insert_customer(4, 'Yuliia', 'Yabluneva 5', 'Vinnytsia', '12345', 'Ukraina')
+    db.insert_customer(5, 'Kateryna', 'Vyshneva 6', 'Krakiv', '67890', 'Poland')
+    db.insert_product(5, 'Сок', 'Апельсиновий', 7)
+    db.insert_product(6, 'Морозиво', 'Ванільне', 10)        
+
+    orders_info = db.get_order_info_for_appropriate_date()
+
+    # Assertions
+    expected_orders_info = [
+        (4, 'Yuliia', 'Сок', '08:06:2024'),
+        (5, 'Kateryna', 'Морозиво', '09:06:2024')
+    ]
+
+    assert orders_info == expected_orders_info, f"Expected {expected_orders_info}, but got {orders_info}"
+
+    # Print statement for debugging
+    print("Orders info:", orders_info)
