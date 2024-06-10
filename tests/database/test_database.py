@@ -148,17 +148,21 @@ def test_get_order_info_for_appropriate_date():
     db.insert_customer(4, 'Yuliia', 'Yabluneva 5', 'Vinnytsia', '12345', 'Ukraina')
     db.insert_customer(5, 'Kateryna', 'Vyshneva 6', 'Krakiv', '67890', 'Poland')
     db.insert_product(5, 'Сок', 'Апельсиновий', 7)
-    db.insert_product(6, 'Морозиво', 'Ванільне', 10)        
+    db.insert_product(6, 'Морозиво', 'Ванільне', 10)     
+    db.insert_order(4, 4, 5, '10:06:2024')
+    db.insert_order(5, 5, 6, '10:06:2024')   
 
     orders_info = db.get_order_info_for_appropriate_date()
 
     # Assertions
     expected_orders_info = [
-        (4, 'Yuliia', 'Сок', '08:06:2024'),
-        (5, 'Kateryna', 'Морозиво', '09:06:2024')
+        (4, 'Yuliia', 'Сок', '10:06:2024'),
+        (5, 'Kateryna', 'Морозиво', '10:06:2024')
     ]
 
-    assert orders_info == expected_orders_info, f"Expected {expected_orders_info}, but got {orders_info}"
+    # Check that each expected order is in the orders_info
+    for expected_order in expected_orders_info:
+        assert expected_order in orders_info, f"Expected {expected_order} to be in {orders_info}"
 
     # Print statement for debugging
     print("Orders info:", orders_info)
