@@ -142,7 +142,7 @@ def test_detailed_orders():
 def test_get_order_info_for_appropriate_date():
     db = Database()
 
-    db.insert_customer(4, 'Yuliia', 'Yabluneva 5', 'Vinnytsia', '12345', 'Ukraina')
+    db.insert_customer(4, 'Yuliia', 'Yabluneva 5', 'Vinnytsia', '12345', 'Ukraine')
     db.insert_customer(5, 'Kateryna', 'Vyshneva 6', 'Krakiv', '67890', 'Poland')
     db.insert_product(5, 'Сок', 'Апельсиновий', 7)
     db.insert_product(6, 'Морозиво', 'Ванільне', 10)     
