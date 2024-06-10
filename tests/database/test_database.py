@@ -70,7 +70,7 @@ def test_detailed_orders():
     assert orders[0][2] == 'солодка вода'  
     assert orders[0][3] == 'з цукром'     
 
-    #individual part
+    #INDIVIDUAL_PART
 
 @pytest.mark.database
 def test_customer_insert():
@@ -131,12 +131,10 @@ def test_detailed_orders():
     orders = db.get_detailed_orders()
     print("Замовлення", orders)
 
-    # Update the expected number of orders according to the current state
     expected_number_of_orders = 5
 
     assert len(orders) == expected_number_of_orders, f"Expected {expected_number_of_orders} orders"
 
-    # Print each order for debugging
     for order in orders:
         print(order)
 
@@ -144,7 +142,6 @@ def test_detailed_orders():
 def test_get_order_info_for_appropriate_date():
     db = Database()
 
-    # Insert test data into customers, products, and orders tables
     db.insert_customer(4, 'Yuliia', 'Yabluneva 5', 'Vinnytsia', '12345', 'Ukraina')
     db.insert_customer(5, 'Kateryna', 'Vyshneva 6', 'Krakiv', '67890', 'Poland')
     db.insert_product(5, 'Сок', 'Апельсиновий', 7)
@@ -164,5 +161,4 @@ def test_get_order_info_for_appropriate_date():
     for expected_order in expected_orders_info:
         assert expected_order in orders_info, f"Expected {expected_order} to be in {orders_info}"
 
-    # Print statement for debugging
     print("Orders info:", orders_info)

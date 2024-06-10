@@ -56,7 +56,8 @@ class Database():
         record = self.cursor.fetchall()
         return record    
     
-     #individual project
+     #INDIVIDUAL_PART
+
     def insert_customer(self, id, name, address, city, postal_code, country):
         query = f"INSERT OR REPLACE INTO customers (id, name, address, city, postalCode, country) VALUES ({id}, '{name}', '{address}', '{city}', {postal_code}, '{country}')"
         self.cursor.execute(query)
@@ -86,7 +87,6 @@ class Database():
         self.connection.commit()
 
     def select_orders_by_order_date(self, order_date):
-        #query = "SELECT * FROM orders WHERE order_date = '{order_date}' "    
         query = "SELECT * FROM orders WHERE order_date = ?"    
         self.cursor.execute(query, (order_date,))
         records = self.cursor.fetchall()
