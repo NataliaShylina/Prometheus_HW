@@ -131,7 +131,7 @@ def test_detailed_orders():
     orders = db.get_detailed_orders()
     print("Замовлення", orders)
 
-    expected_number_of_orders = 5
+    expected_number_of_orders = 6
 
     assert len(orders) == expected_number_of_orders, f"Expected {expected_number_of_orders} orders"
 
@@ -162,3 +162,65 @@ def test_get_order_info_for_appropriate_date():
         assert expected_order in orders_info, f"Expected {expected_order} to be in {orders_info}"
 
     print("Orders info:", orders_info)
+
+@pytest.mark.database
+def test_get_customer_info_for_appropriate_country():
+    db = Database()
+
+    db.insert_customer(4, 'Yuliia', 'Yabluneva 5', 'Vinnytsia', '12345', 'Ukraina')
+    db.insert_customer(5, 'Kateryna', 'Vyshneva 6', 'Krakiv', '67890', 'Poland')
+    db.insert_customer(6, 'Maryna', 'Soborna 7', 'Krakiv', '54321', 'Poland')
+
+    customers_info = db.get_customer_info_for_appropriate_country('Poland')
+
+    expected_customers_info = [
+        (5, 'Kateryna', 'Vyshneva 6', 'Krakiv', '67890', 'Poland'),
+        (6, 'Maryna', 'Soborna 7', 'Krakiv', '54321', 'Poland')
+    ]
+
+    for expected_customer in expected_customers_info:
+        assert expected_customer in customers_info, f"Expected {expected_customer} to be in {customers_info}"
+
+    print("Customers info:", customers_info)
+
+@pytest.mark.database
+def test_search_for_products_with_keyword():
+    db = Database()
+
+    db.insert_product(7, 'Питна вода', 'негазована', 15)
+    db.insert_product(8, 'Мінеральна вода', 'без газу', 12)
+
+    products_with_water = db.search_for_products_with_keyword('вода')
+
+    expected_products_with_water = [
+        (7, 'Питна вода', 'негазована', 15),
+        (8, 'Мінеральна вода', 'без газу', 12),
+    ]
+
+    for expected_product in expected_products_with_water:
+        assert expected_product in products_with_water, f"Expected {expected_product} to be in {products_with_water}"
+
+    print("Products with 'вода':", products_with_water)
+
+@pytest.mark.database
+def test_delete_product_that_is_not_in_demand():
+    db = Database()
+
+    db.insert_product(9, 'Молоко', 'жирність 1,5%', 20)
+
+    db.delete_product(3)
+
+    remaining_products = db.search_for_products_with_keyword('Молоко')
+
+    expected_remaining_products = [
+        (9, 'Молоко', 'жирність 1,5%', 20)
+    ]
+
+    # Assert the number of remaining products matches the expected number
+    assert len(remaining_products) == len(expected_remaining_products), f"Expected {len(expected_remaining_products)} products, but got {len(remaining_products)}"
+
+    # Assert each expected product is in the remaining products
+    for expected_product in expected_remaining_products:
+        assert expected_product in remaining_products, f"Expected {expected_product} to be in {remaining_products}"
+
+    print("Remaining products after deletion:", remaining_products)    

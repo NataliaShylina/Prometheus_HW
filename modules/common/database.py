@@ -101,3 +101,19 @@ class Database():
         record = self.cursor.fetchall()
         return record 
     
+    def get_customer_info_for_appropriate_country(self, country):
+        query = f"SELECT id, name, address, city, postalCode, country FROM customers WHERE country = '{country}'"
+        self.cursor.execute(query)
+        record = self.cursor.fetchall()
+        return record
+    
+    def search_for_products_with_keyword(self, keyword):
+        query = f"SELECT * FROM products WHERE name LIKE '%{keyword}%'"
+        self.cursor.execute(query)
+        record = self.cursor.fetchall()
+        return record
+    
+    def delete_product(self, name):
+        query = f"DELETE FROM products WHERE name = {name}"
+        self.cursor.execute(query)
+        self.connection.commit()
