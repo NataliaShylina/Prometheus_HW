@@ -1,17 +1,3 @@
-<<<<<<< HEAD
-sauce_demo_tests/
-│
-├── pages/
-│   ├── base_page.py
-│   ├── product_page.py
-│   └── sauce_demo_page.py
-│
-├── tests/
-│   └── test_ui_sauce_demo_page_object.py
-│
-└── pytest.ini
---- become_qa_auto.db
-=======
 <h1 align="center">Hi 👋, I'm Nataliia Shylina</h1>
 <h3 align="center">A Certified QA Engineer</h3>
 
@@ -37,4 +23,3 @@ sauce_demo_tests/
 <p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=nataliashylina&show_icons=true&locale=en" alt="nataliashylina" /></p>
 
 <p><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=nataliashylina&" alt="nataliashylina" /></p>
->>>>>>> afc3a517d2bcfa38c277c251063a9ccd2f0eb5eb
