@@ -1,7 +1,7 @@
 import pytest
 from modules.api.clients.github import GitHub
 from selenium import webdriver
-"""
+
 class User:
 
     def __init__(self) -> None:
@@ -31,7 +31,7 @@ def user():
 def github_api():
     api = GitHub()
     yield api
-"""
+
 @pytest.fixture(scope="module")
 def driver():
     driver = webdriver.Chrome()  
