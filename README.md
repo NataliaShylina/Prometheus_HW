@@ -23,4 +23,3 @@
 <p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=nataliashylina&show_icons=true&locale=en" alt="nataliashylina" /></p>
 
 <p><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=nataliashylina&" alt="nataliashylina" /></p>
->>>>>>> afc3a517d2bcfa38c277c251063a9ccd2f0eb5eb
